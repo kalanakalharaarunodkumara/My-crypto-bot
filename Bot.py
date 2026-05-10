@@ -2,7 +2,17 @@ import from flask import Flask, render_template
 import os
 import threading
 
-app = Flask(__name__)ccxt
+app = Flask(__name__)app.route('/')
+def home():
+    return render_template('index.html')
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
+# Start Flask in a separate thread so it doesn't stop your bot
+threading.Thread(target=run_flask, daemon=True).start()
+import ccxt
 import pandas as pd
 import pandas_ta as ta
 import time
