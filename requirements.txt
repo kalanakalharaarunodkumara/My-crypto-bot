@@ -1,0 +1,6 @@
+ccxt
+pandas
+pandas-ta
+flask
+twilio
+numexpr
