@@ -1,0 +1,90 @@
+DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KD AI AUTO PRO | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; }
+        .gradient-text { background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .status-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold gradient-text">KD AI AUTO BOT <span class="text-xs bg-blue-600 text-white px-2 py-1 rounded ml-2">ULTIMATE PRO</span></h1>
+                <p class="text-gray-400 text-sm">Global Market Scanning Enabled</p>
+            </div>
+            <div id="connection-status" class="flex items-center text-red-500 font-bold">
+                <i class="fas fa-circle mr-2 text-xs status-pulse"></i> DISCONNECTED
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="glass-card p-6 border-l-4 border-blue-500">
+                <p class="text-gray-400 text-sm uppercase">Total Profit</p>
+                <h2 class="text-3xl font-bold" id="total-profit">$0.00</h2>
+            </div>
+            <div class="glass-card p-6 border-l-4 border-green-500">
+                <p class="text-gray-400 text-sm uppercase">Active Trades</p>
+                <h2 class="text-3xl font-bold" id="active-count">0</h2>
+            </div>
+            <div class="glass-card p-6 border-l-4 border-purple-500">
+                <p class="text-gray-400 text-sm uppercase">Bot Mode</p>
+                <h2 class="text-xl font-bold" id="bot-mode text-blue-400">DEMO MODE</h2>
+            </div>
+            <div class="glass-card p-6 border-l-4 border-yellow-500 text-center">
+                <button onclick="toggleTrade()" id="trade-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-bold transition">START BOT</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 glass-card p-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-search-dollar mr-2 text-blue-400"></i> Global Market Scan
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-gray-500 border-b border-gray-700">
+                                <th class="pb-3">Asset</th>
+                                <th class="pb-3">Price</th>
+                                <th class="pb-3">4H Trend</th>
+                                <th class="pb-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="market-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="text-xl font-bold mb-4"><i class="fas fa-link mr-2 text-purple-400"></i> Link Binance</h3>
+                <div class="space-y-4">
+                    <input type="password" id="api-key" placeholder="Binance API Key" class="w-full bg-slate-900 border border-gray-700 rounded p-2 text-sm focus:outline-none focus:border-blue-500">
+                    <input type="password" id="api-secret" placeholder="Binance API Secret" class="w-full bg-slate-900 border border-gray-700 rounded p-2 text-sm focus:outline-none focus:border-blue-500">
+                    <button onclick="linkAPI()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded font-bold hover:opacity-90 transition">CONNECT KEYS</button>
+                    <hr class="border-gray-700 my-4">
+                    <p class="text-xs text-gray-500 italic">Notice: Always test with Demo Mode first. Your keys are processed locally.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function updateDashboard() {
+            try {
+                const res = await fetch('/api/data');
+                const data = await res.json();
+                
+                document.getElementById('total-profit').innerText = `$${data.profit}`;
+                document.getElementById('active-count').innerText = data.active.length;
+                document.getElementById('connection-status').innerHTML = data.active ? 
+                    '<i class="
