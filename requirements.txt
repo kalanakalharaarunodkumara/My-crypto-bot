@@ -4,3 +4,5 @@ pandas-ta
 flask
 twilio
 numexpr
+numba==0.58.1
+numpy<1.27,>=1.21
