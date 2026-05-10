@@ -1,4 +1,8 @@
-import ccxt
+import from flask import Flask, render_template
+import os
+import threading
+
+app = Flask(__name__)ccxt
 import pandas as pd
 import pandas_ta as ta
 import time
@@ -121,3 +125,8 @@ def save_data():
     with open(DATA_FILE, "w") as f: json.dump(active_trades, f)
 
 # (Flask routes for link and data remain the same)
+from flask import Flask, render_template
+import os
+import threading
+
+app = Flask(__name__)p
